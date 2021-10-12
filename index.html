@@ -4,20 +4,22 @@ Make a fetch request and get the data depending on whatever movie you entered.
 Show the movie data on the app. -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        img{
-            width:20%;
+        img {
+            width: 20%;
             /* height:50px; */
         }
     </style>
 </head>
+
 <body>
-    <input id='movies'type="text">
+    <input id='movies' type="text">
     <button id='search'>Search</button>
     <div id="div1">
 
@@ -25,24 +27,53 @@ Show the movie data on the app. -->
     <script>
         var search = document.getElementById('search')
         search.addEventListener('click', show)
-        async function show(){
-            var parent =document.getElementById('div1');
-            parent.innerHTML =null;
-            var movies =  document.getElementById("movies").value;
-            var url =`http://www.omdbapi.com/?t=${movies}&apikey=173483b6`;
-            // var url2='http://www.omdbapi.com/?i=tt3896198&apikey=173483b6';
-            let response = await fetch(url);
-            let data = await response.json();
-            // console.log(data);
-           
-            var img =document.createElement('img');
-            img.src=data.Poster;
-            var p1=document.createElement('p');
-            p1.innerText=data.Title;
-            parent.append(img,p1);
+        // show.catch(error=> {
+        //     alert('No Movies Found')
+        // })
+        async function show() {
+
+            try {
+
+                var parent = document.getElementById('div1');
+                parent.innerHTML = null;
+                var movies = document.getElementById("movies").value;
+                var url = `http://www.omdbapi.com/?t=${movies}&apikey=173483b6`;
+                // var url2='http://www.omdbapi.com/?i=tt3896198&apikey=173483b6';
+                let response = await fetch(url);
+                // console.log(response);
+
+
+                let data = await response.json();
+
+                if (data.Title == undefined) {
+                    throw new Error('Movies Not found')
+                }
+
+
+
+                var img = document.createElement('img');
+                img.src = data.Poster;
+                var p1 = document.createElement('p');
+                p1.innerText = data.Title;
+
+                var p2 = document.createElement('p');
+                p2.innerText = "Released Date: " + data.Released;
+
+                var p3 = document.createElement('p');
+                p3.innerText = "Rating: " + data.imdbRating;
+
+                parent.append(img, p1, p2, p3);
+            } catch (error) {
+                alert("Error: " + error)
+                // console.log(error)
+
+            }
+
 
         }
 
+
     </script>
 </body>
+
 </html>
