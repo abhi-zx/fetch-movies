@@ -44,7 +44,7 @@ Show the movie data on the app. -->
 
 
                 let data = await response.json();
-
+                console.log(data);
                 if (data.Title == undefined) {
                     throw new Error('Movies Not found')
                 }
@@ -61,8 +61,17 @@ Show the movie data on the app. -->
 
                 var p3 = document.createElement('p');
                 p3.innerText = "Rating: " + data.imdbRating;
-
+                // if(data.Ratings[0].value> (8.5/10)){
+                //     console.log('anny')
+                // }
+                if(data.imdbRating>8.5){
+                    var p4 = document.createElement('p');
+                    p4.innerText= 'Recommended'
+                    parent.append(img, p1, p2, p3,p4);
+                }
+            else{
                 parent.append(img, p1, p2, p3);
+                }
             } catch (error) {
                 alert("Error: " + error)
                 // console.log(error)
